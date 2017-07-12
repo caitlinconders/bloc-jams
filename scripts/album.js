@@ -71,12 +71,23 @@ var setCurrentAlbum = function(album) {
  var findParentByClassName = function(element, targetClass) {
         if (element) {
             var currentParent = element.parentElement;
+
+            if (currentParent === null) {
+                console.log("No parent found.");
+
+            } else {
+
             while (currentParent.className !== targetClass && currentParent.className !== null) {
                 currentParent = currentParent.parentElement;
             }
-            return currentParent;
+            if (currentParent.className === targetClass) {
+                return currentParent;
+            } else {
+                console.log("No parent found with that class name");
+            }
         }
-    };
+    }
+};
 
     // #6 -- need assistance - what are the difference switch options for? how was this code written at all? concerned that i don't understand JS fundamentals
     var getSongItem = function(element)  {
