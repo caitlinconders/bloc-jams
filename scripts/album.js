@@ -1,6 +1,6 @@
 var setSong = function(songNumber) {
     if (currentSoundFile) {
-        currrentSoundFile.stop();
+        currentSoundFile.stop();
     }
     currentlyPlayingSongNumber = parseInt(songNumber);
     currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
