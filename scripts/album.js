@@ -6,10 +6,10 @@ var setSong = function(songNumber) {
     currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
     // Assign a new Buzz sound object
     currentSoundFile = new buzz.sound(currentSongFromAlbum.audioUrl, {
-        //passed in a settings object w/ 2 properties defined
-        formats: ['mp3'],
-        preload: true
-    });
+         // #2
+         formats: [ 'mp3' ],
+         preload: true
+     });
 
     setVolume(currentVolume);
 };
@@ -35,34 +35,33 @@ var createSongRow = function(songNumber, songName, songLength) {
 
     var $row = $(template);
 
-    var clickHandler = function() {
+var clickHandler = function() {
+
         var songNumber = parseInt($(this).attr('data-song-number'));
 
 	    if (currentlyPlayingSongNumber !== null) {
 		// Revert to song number for currently playing song because user started playing new song.
 		var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
+
+        currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
 		currentlyPlayingCell.html(currentlyPlayingSongNumber);
 	   }
-	      if (currentlyPlayingSongNumber !== songNumber) {
+
+	    if (currentlyPlayingSongNumber !== songNumber) {
 		// Switch from Play -> Pause button to indicate new song is playing.
+            setSong(songNumber);
+            currentSoundFile.play();
+            $(this).html(pauseButtonTemplate);
+		    updatePlayerBarSong();
 
-        currentSoundFile.play();
-
-		$(this).html(pauseButtonTemplate);
-		setSong(songNumber);
-        updatePlayerBarSong();
-
-    } else if (currentlyPlayingSongNumber === songNumber) {
-            if (currentSoundFile.isPaused()) {
-            //Resume playing song and revert icon in the song row and the player bar to the pause button
+        } else if (currentlyPlayingSongNumber === songNumber) {
+                if (currentSoundFile.isPaused()) {
                 $(this).html(pauseButtonTemplate);
                 $('.main-controls .play-pause').html(playerBarPauseButton);
                 currentSoundFile.play();
-
-
-            } else {
-            //Pause the song and set the content of the song number cell and player bar's pause button back to the play button
-            $(this).html(playButtonTemplate);               $('.main-controls .play-pause').html(playerBarPlayButton);
+        } else {
+            $(this).html(playButtonTemplate);
+            $('.main-controls .play-pause').html(playerBarPlayButton);
             currentSoundFile.pause();
             }
 	    }
