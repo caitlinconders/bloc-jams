@@ -14,7 +14,7 @@ var setSong = function(songNumber) {
     setVolume(currentVolume);
 };
 
-var setVolume = function(volme) {
+var setVolume = function(volume) {
     if (currentSoundFile) {
         currentSoundFile.setVolume(volume);
     }
@@ -68,7 +68,7 @@ var clickHandler = function() {
    };
 
 var onHover = function(event) {
-    var songNumberCell = parseInt($(this).find('.song-item-number'));
+    var songNumberCell = $(this).find('.song-item-number');
     var songNumber = parseInt($(this).attr('.data-song-number'));
 
     if (songNumber !== currentlyPlayingSongNumber) {
@@ -77,7 +77,7 @@ var onHover = function(event) {
 };
 
 var offHover = function(event) {
-    var songNumberCell = parseInt($(this).find('.song-item-number'));
+    var songNumberCell = $(this).find('.song-item-number');
     var songNumber = parseInt($(this).attr('.data-song-number'));
 
     if (songNumber !== currentlyPlayingSongNumber) {
