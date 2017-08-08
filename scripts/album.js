@@ -27,7 +27,7 @@ var setVolume = function(volume) {
 };
 
 var getSongNumberCell = function(number) {
-    return $('.song-item-number [data-song-number="' + number + '"]');
+    return $('.song-item-number[data-song-number="' + number + '"]');
 };
 
 var createSongRow = function(songNumber, songName, songLength) {
@@ -157,6 +157,12 @@ var setCurrentAlbum = function(album) {
          // #4
          var seekBarFillRatio = offsetX / barWidth;
 
+         if ($(this).parent().attr('class') == 'seek-control') {
+            seek(seekBarFillRatio * currentSoundFile.getDuration());
+        } else {
+            setVolume(seekBarFillRatio * 100);
+        }
+
          // #5
          updateSeekPercentage($(this), seekBarFillRatio);
      });
@@ -221,7 +227,7 @@ var nextSong = function() {
     var lastSongNumber = currentlyPlayingSongNumber;
 
     // Set a new current song - "GET SONG" !!!
-    getSongNumberCell(currentSongIndex + 1);
+    setSong(currentSongIndex + 1);
 
     currentSoundFile.play();
     updateSeekBarWhileSongPlays();
@@ -249,7 +255,7 @@ var previousSong = function() {
     var lastSongNumber = currentlyPlayingSongNumber;
 
     // Set a new current song
-    getSongNumberCell(currentSongIndex + 1);
+    setSong(currentSongIndex + 1);
 
     currentSoundFile.play();
     updateSeekBarWhileSongPlays();
