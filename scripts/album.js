@@ -35,7 +35,7 @@ var createSongRow = function(songNumber, songName, songLength) {
        '<tr class="album-view-song-item">'
      + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
      + '  <td class="song-item-title">' + songName + '</td>'
-     + '  <td class="song-item-duration">' + songLength + '</td>'
+     + '  <td class="song-item-duration">' + filterTimeCode(songLength) + '</td>'
      + '</tr>'
      ;
 
@@ -200,6 +200,11 @@ var setCurrentAlbum = function(album) {
 
              updateSeekPercentage($seekBar, seekBarFillRatio);
          });
+
+         currentSoundFile.bind("timeupdate", function () {
+            var timer = this.getTime();
+            setCurrentTimeInPlayerBar(timer);
+        });
      }
  };
 
@@ -274,17 +279,51 @@ var previousSong = function() {
 
 //assignment 20
 var togglePlayFromPlayerBar = function() {
-    if (currentSoundFile.isPaused) {
-        songNumberCell.html(pauseButtonTemplate);
-        $(this).html(playerBarPauseButton);
+    if (currentSoundFile === null) {
+        return true;
+    }
+
+    if (currentSoundFile.isPaused()) {
+        var songNumberCell = $(this).find('.song-item-number');
+        var songNumber = parseInt(songNumberCell.attr('data-song-number'));
+        getSongNumberCell(songNumber);
+        var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
+
+        currentlyPlayingCell.html(pauseButtonTemplate);
+        $('.main-controls .play-pause').html(playerBarPauseButton);
         currentSoundFile.play();
     } else {
-        songNumberCell.html(playButtonTemplate);
-        $(this).html(playerBarPlayButton);
+        var songNumberCell = $(this).find('.song-item-number');
+        var songNumber = parseInt(songNumberCell.attr('data-song-number'));
+        getSongNumberCell(songNumber);
+        var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
+
+        currentlyPlayingCell.html(playButtonTemplate);
+        $('.main-controls .play-pause').html(playerBarPlayButton);
         currentSoundFile.pause();
     }
 };
 
+
+var setCurrentTimeInPlayerBar = function(currentTime) {
+    $('.current-time').text(filterTimeCode(currentTime));
+};
+
+var setTotalTimeInPlayerBar = function(totalTime) {
+    $('.total-time').text(filterTimeCode(currentSongFromAlbum.duration));
+};
+
+var filterTimeCode = function(timeInSeconds) {
+    var minutes = Math.floor(timeInSeconds / 60);
+    var seconds = Math.floor(timeInSeconds % 60);
+
+
+    if (seconds < 10) {
+        return minutes + ":0" + seconds;
+    } else {
+        return minutes + ":" + seconds;
+    }
+};
 
 
  var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
