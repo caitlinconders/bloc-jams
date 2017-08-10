@@ -35,11 +35,12 @@ var createSongRow = function(songNumber, songName, songLength) {
        '<tr class="album-view-song-item">'
      + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
      + '  <td class="song-item-title">' + songName + '</td>'
-     + '  <td class="song-item-duration">' + songLength + '</td>'
+     + '  <td class="song-item-duration">' + filterTimeCode(songLength); + '</td>'
      + '</tr>'
      ;
 
     var $row = $(template);
+};
 
 var clickHandler = function() {
 
@@ -190,6 +191,16 @@ var setCurrentAlbum = function(album) {
 
  };
 
+ var setCurrentTimeInPlayerBar = function(currentTime) {
+     var $currentTime = $('.current-time');
+     $currentTime.text(currentTime);
+ };
+
+ var setTotalTimeInPlayerBar = function(totalTime) {
+     var $totalTime = $('.total-time');
+     $totalTime.text(totalTime);
+ };
+
  var updateSeekBarWhileSongPlays = function() {
      if (currentSoundFile) {
          // #10
@@ -199,6 +210,7 @@ var setCurrentAlbum = function(album) {
              var $seekBar = $('.seek-control .seek-bar');
 
              updateSeekPercentage($seekBar, seekBarFillRatio);
+             setCurrentTimeInPlayerBar(filterTimeCode(this.getTime());
          });
      }
  };
@@ -207,11 +219,16 @@ var setCurrentAlbum = function(album) {
      return album.songs.indexOf(song);
  };
 
+ var filterTimeCode = function(timeInSeconds) {
+     /*???*/
+ }
+
  var updatePlayerBarSong = function() {
      $('.currently-playing .song-name').text(currentSongFromAlbum.title);
      $('.currently-playing .artist-name').text(currentAlbum.artist);
      $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
      $('.main-controls .play-pause').html(playerBarPauseButton);
+     setTotalTimeInPlayerBar(filterTimeCode(currentSongFromAlbum.duration));
  };
 
 var nextSong = function() {
@@ -271,6 +288,8 @@ var previousSong = function() {
     $previousSongNumberCell.html(pauseButtonTemplate);
     $lastSongNumberCell.html(lastSongNumber);
 };
+
+
 
 
 
